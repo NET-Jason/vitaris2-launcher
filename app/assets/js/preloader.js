@@ -1,6 +1,6 @@
- const { contextBridge, ipcRenderer } = require('electron')
+const { contextBridge } = require('electron')
+require('@electron/remote/renderer')
 
-// Exponer APIs seguras al renderer si se necesitan en el futuro
 window.addEventListener('DOMContentLoaded', () => {
     console.log('Vitaris II Launcher - Preloader iniciado')
 })

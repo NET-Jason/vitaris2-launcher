@@ -1,7 +1,9 @@
- 
-name: Build
+name: Build & Release
 
-on: push
+on:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   release:
@@ -12,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [windows-latest, macos-latest, ubuntu-latest]
 
     steps:
       - name: Check out Git repository
@@ -22,11 +24,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.x
 
       - name: Install Dependencies
         run: npm ci

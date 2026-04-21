@@ -6,7 +6,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // ── Frame: botones de ventana ───────────────────────────────────────────
-    const { remote } = require('@electron/remote')
+    const remote = require('@electron/remote')
     const currentWindow = remote.getCurrentWindow()
 
     const btnMinimize = document.getElementById('frameButton_minimize')
