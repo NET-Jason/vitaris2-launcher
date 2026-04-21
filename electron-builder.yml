@@ -1,50 +1,49 @@
- appId: 'vitaris2launcher'
-productName: 'Vitaris II Launcher'
-artifactName: '${productName}-setup-${version}.${ext}'
+appId: vitaris2launcher
+productName: "Vitaris II Launcher"
+artifactName: "${productName}-setup-${version}.${ext}"
 
-copyright: 'Copyright © 2024-2035 NET-Jason'
+copyright: "Copyright 2024-2035 NET-Jason"
 
 asar: true
-compression: 'maximum'
+compression: maximum
 
 files:
-  - '!{dist,.gitignore,.vscode,docs,dev-app-update.yml,.nvmrc,.eslintrc.json}'
+  - "!dist"
+  - "!.gitignore"
+  - "!.vscode"
+  - "!docs"
+  - "!dev-app-update.yml"
+  - "!.nvmrc"
+  - "!.eslintrc.json"
 
-extraResources:
-  - 'libraries'
-
-# Windows
 win:
   target:
-    - target: 'nsis'
-      arch: 'x64'
+    - target: nsis
+      arch: x64
 
-# Windows Installer
 nsis:
   oneClick: false
   perMachine: false
   allowElevation: true
   allowToChangeInstallationDirectory: true
 
-# macOS
 mac:
   target:
-    - target: 'dmg'
+    - target: dmg
       arch:
-        - 'x64'
-        - 'arm64'
-  artifactName: '${productName}-setup-${version}-${arch}.${ext}'
-  category: 'public.app-category.games'
+        - x64
+        - arm64
+  artifactName: "${productName}-setup-${version}-${arch}.${ext}"
+  category: public.app-category.games
 
-# Linux
 linux:
-  target: 'AppImage'
-  maintainer: 'NET-Jason'
-  vendor: 'NET-Jason'
-  synopsis: 'Launcher Oficial Vitaris II'
-  description: 'Launcher personalizado para el servidor Vitaris II. Gestiona mods, configuraciones y actualizaciones automáticamente.'
-  category: 'Game'
+  target: AppImage
+  maintainer: NET-Jason
+  vendor: NET-Jason
+  synopsis: Launcher Oficial Vitaris II
+  description: Launcher personalizado para el servidor Vitaris II
+  category: Game
 
 directories:
-  buildResources: 'build'
-  output: 'dist'
+  buildResources: build
+  output: dist
