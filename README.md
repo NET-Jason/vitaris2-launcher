@@ -11,7 +11,7 @@
 ![License](https://img.shields.io/badge/licencia-UNLICENSED-7c3aed?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/plataforma-Windows%20%7C%20macOS%20%7C%20Linux-7c3aed?style=for-the-badge)
 
-[⬇️ Descargar](https://github.com/NET-Jason/vitaris2-launcher/releases/latest) · [🐛 Reportar Bug](https://github.com/NET-Jason/vitaris2-launcher/issues) · [💬 Discord](#)
+[⬇️ Descargar](https://github.com/NET-Jason/vitaris2-launcher/releases/latest) · [🐛 Reportar Bug](https://github.com/NET-Jason/vitaris2-launcher/issues) · [💬 Discord](https://discord.gg/JnXmbsv9Eq)
 
 </div>
 
