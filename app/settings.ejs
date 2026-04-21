@@ -1,0 +1,66 @@
+ <div id="settingsContainer" style="display: none;">
+    <div id="settingsHeader">
+        <button id="settingsBack" tabindex="-1">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M13 8H3M3 8L7 4M3 8L7 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Volver</span>
+        </button>
+        <h2>Configuración</h2>
+    </div>
+
+    <div id="settingsContent">
+
+        <!-- Java -->
+        <div class="settingsSection">
+            <h3 class="settingsSectionTitle">Java</h3>
+            <div class="settingsField">
+                <label>Ruta de Java</label>
+                <div class="settingsInputRow">
+                    <input type="text" id="javaPath" placeholder="Automático" tabindex="-1"/>
+                    <button id="javaPathBrowse" tabindex="-1">Buscar</button>
+                </div>
+            </div>
+            <div class="settingsField">
+                <label>RAM Mínima (MB)</label>
+                <input type="number" id="minRam" value="1024" min="512" tabindex="-1"/>
+            </div>
+            <div class="settingsField">
+                <label>RAM Máxima (MB)</label>
+                <input type="number" id="maxRam" value="4096" min="1024" tabindex="-1"/>
+            </div>
+            <div class="settingsField">
+                <label>Argumentos JVM adicionales</label>
+                <input type="text" id="jvmArgs" placeholder="-XX:+UseG1GC" tabindex="-1"/>
+            </div>
+        </div>
+
+        <!-- Launcher -->
+        <div class="settingsSection">
+            <h3 class="settingsSectionTitle">Launcher</h3>
+            <div class="settingsField settingsToggle">
+                <label>Cerrar launcher al iniciar juego</label>
+                <div class="toggleSwitch" id="closeLauncherToggle">
+                    <div class="toggleKnob"></div>
+                </div>
+            </div>
+            <div class="settingsField settingsToggle">
+                <label>Permitir versiones pre-release</label>
+                <div class="toggleSwitch" id="prereleaseToggle">
+                    <div class="toggleKnob"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Acerca de -->
+        <div class="settingsSection">
+            <h3 class="settingsSectionTitle">Acerca de</h3>
+            <div class="settingsAbout">
+                <img src="assets/images/VitarisLogo.png" alt="Vitaris II" id="settingsLogo">
+                <p id="settingsVersion">Vitaris II Launcher v1.0.0</p>
+                <p id="settingsAuthor">Desarrollado por <a id="settingsAuthorLink">NET-Jason</a></p>
+            </div>
+        </div>
+
+    </div>
+</div>

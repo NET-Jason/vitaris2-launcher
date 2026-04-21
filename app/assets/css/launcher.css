@@ -1,0 +1,846 @@
+ /*******************************************************************************
+ *  VITARIS II LAUNCHER - CSS Principal
+ *  Autor: NET-Jason
+ *******************************************************************************/
+
+/* ── Fuentes ── */
+@font-face {
+    font-family: 'Avenir Book';
+    src: url('../fonts/Avenir-Book.ttf');
+}
+@font-face {
+    font-family: 'Avenir Medium';
+    src: url('../fonts/Avenir-Medium.ttf');
+}
+@font-face {
+    font-family: 'Avenir Heavy';
+    src: url('../fonts/Avenir-Heavy.ttf');
+}
+
+/* ── Variables ── */
+:root {
+    --vitaris-primary:     #7c3aed;
+    --vitaris-secondary:   #4f46e5;
+    --vitaris-accent:      #a78bfa;
+    --vitaris-dark:        #0a0a12;
+    --vitaris-darker:      #06060e;
+    --vitaris-surface:     rgba(255,255,255,0.05);
+    --vitaris-border:      rgba(124,58,237,0.3);
+    --vitaris-text:        #e2e8f0;
+    --vitaris-text-muted:  #94a3b8;
+    --vitaris-success:     #22c55e;
+    --vitaris-error:       #ef4444;
+    --vitaris-warning:     #f59e0b;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; }
+body, html, div { margin: 0; padding: 0; }
+p { -webkit-margin-before: 0; -webkit-margin-after: 0; }
+
+body, button {
+    font-family: 'Avenir Book', sans-serif;
+    color: var(--vitaris-text);
+}
+
+a { color: var(--vitaris-accent); cursor: pointer; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/*******************************************************************************
+ *  FRAME BAR
+ *******************************************************************************/
+#frameBar {
+    position: relative;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    background: rgba(6, 6, 14, 0.9);
+    border-bottom: 1px solid var(--vitaris-border);
+    -webkit-user-select: none;
+}
+#frameResizableTop {
+    height: 2px;
+    width: 100%;
+    -webkit-app-region: no-drag;
+}
+#frameMain {
+    display: flex;
+    height: 20px;
+}
+.frameResizableVert {
+    width: 2px;
+    -webkit-app-region: no-drag;
+}
+#frameContentWin {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    -webkit-app-region: drag;
+}
+#frameContentDarwin {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    -webkit-app-region: drag;
+}
+#frameTitleDock { padding: 0 10px; display: flex; align-items: center; }
+#frameTitleText {
+    font-size: 11px;
+    font-family: 'Avenir Heavy', sans-serif;
+    letter-spacing: 2px;
+    color: var(--vitaris-accent);
+    text-transform: uppercase;
+}
+#frameButtonDockWin {
+    -webkit-app-region: no-drag !important;
+    position: relative;
+    top: -2px;
+    right: -2px;
+    height: 22px;
+    display: flex;
+}
+#frameButtonDockWin > .frameButton:not(:first-child) { margin-left: -4px; }
+#frameButtonDockDarwin {
+    -webkit-app-region: no-drag !important;
+    position: relative;
+    top: -1px;
+    right: -1px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding-left: 8px;
+}
+.frameButton {
+    background: none;
+    border: none;
+    height: 22px;
+    width: 39px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    transition: opacity 0.15s, background 0.15s;
+}
+.frameButton:hover { background: rgba(255,255,255,0.1); opacity: 1; }
+.frameButton:active { background: rgba(255,255,255,0.15); }
+.frameButton:focus { outline: none; }
+#frameButton_close:hover { background: rgba(239,68,68,0.6) !important; opacity: 1; }
+#frameButton_close:active { background: rgba(220,38,38,0.6) !important; }
+
+.frameButtonDarwin {
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    border: 0;
+    -webkit-app-region: no-drag !important;
+    cursor: pointer;
+}
+.frameButtonDarwin:focus { outline: none; }
+#frameButtonDarwin_close { background-color: #e74c32; }
+#frameButtonDarwin_close:hover { background-color: #ff6b5a; }
+#frameButtonDarwin_minimize { background-color: #fed045; }
+#frameButtonDarwin_minimize:hover { background-color: #ffe07a; }
+#frameButtonDarwin_maximize { background-color: #27c93f; }
+#frameButtonDarwin_maximize:hover { background-color: #5adb6a; }
+
+/*******************************************************************************
+ *  LOADING SCREEN
+ *******************************************************************************/
+#loadingContainer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: var(--vitaris-darker);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+#loadingContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+#loadSpinnerContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#loadCenterImage {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    animation: pulseLogo 2s ease-in-out infinite;
+}
+@keyframes pulseLogo {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.08); opacity: 0.85; }
+}
+
+/*******************************************************************************
+ *  WELCOME VIEW
+ *******************************************************************************/
+#welcomeContainer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+}
+#welcomeContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+    animation: fadeInUp 0.6s ease;
+}
+#welcomeLogoContainer img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(124,58,237,0.6));
+}
+#welcomeTitle {
+    font-family: 'Avenir Heavy', sans-serif;
+    font-size: 42px;
+    letter-spacing: 6px;
+    color: #fff;
+    text-shadow: 0 0 30px rgba(124,58,237,0.8);
+    margin: 0;
+}
+#welcomeDesc {
+    font-size: 14px;
+    color: var(--vitaris-text-muted);
+    line-height: 1.6;
+}
+#welcomeButton {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 36px;
+    background: linear-gradient(135deg, var(--vitaris-primary), var(--vitaris-secondary));
+    border: none;
+    border-radius: 4px;
+    font-family: 'Avenir Heavy', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(124,58,237,0.4);
+    margin-top: 10px;
+}
+#welcomeButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(124,58,237,0.6);
+}
+#welcomeButton:active { transform: translateY(0); }
+
+/*******************************************************************************
+ *  LOGIN VIEW
+ *******************************************************************************/
+#loginContainer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+}
+#loginContent {
+    background: rgba(10, 10, 20, 0.85);
+    border: 1px solid var(--vitaris-border);
+    border-radius: 8px;
+    padding: 36px 40px;
+    width: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    backdrop-filter: blur(10px);
+    animation: fadeInUp 0.4s ease;
+}
+#loginLogoContainer img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(124,58,237,0.5));
+}
+#loginTitle {
+    font-family: 'Avenir Heavy', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    margin: 0;
+    color: #fff;
+}
+#loginForm {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.loginField input {
+    width: 100%;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(124,58,237,0.25);
+    border-radius: 4px;
+    color: var(--vitaris-text);
+    font-family: 'Avenir Book', sans-serif;
+    font-size: 13px;
+    transition: border-color 0.2s;
+    outline: none;
+}
+.loginField input:focus {
+    border-color: var(--vitaris-primary);
+}
+.loginField input::placeholder { color: var(--vitaris-text-muted); }
+#loginOptions {
+    display: flex;
+    align-items: center;
+}
+#loginRememberOption {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--vitaris-text-muted);
+    cursor: pointer;
+}
+#loginButton {
+    width: 100%;
+    padding: 11px;
+    background: linear-gradient(135deg, var(--vitaris-primary), var(--vitaris-secondary));
+    border: none;
+    border-radius: 4px;
+    font-family: 'Avenir Heavy', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: white;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+    margin-top: 4px;
+}
+#loginButton:hover { opacity: 0.9; transform: translateY(-1px); }
+#loginSeparator {
+    text-align: center;
+    color: var(--vitaris-text-muted);
+    font-size: 12px;
+    position: relative;
+}
+#loginSeparator::before,
+#loginSeparator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 42%;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+}
+#loginSeparator::before { left: 0; }
+#loginSeparator::after { right: 0; }
+#loginMicrosoftButton {
+    width: 100%;
+    padding: 10px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 4px;
+    font-family: 'Avenir Book', sans-serif;
+    font-size: 13px;
+    color: var(--vitaris-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.2s;
+}
+#loginMicrosoftButton:hover { background: rgba(255,255,255,0.1); }
+#loginErrorContainer {
+    width: 100%;
+    padding: 8px 12px;
+    background: rgba(239,68,68,0.15);
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 4px;
+}
+#loginErrorMessage { font-size: 12px; color: var(--vitaris-error); text-align: center; }
+
+/*******************************************************************************
+ *  WAITING VIEW
+ *******************************************************************************/
+#waitingContainer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+}
+#waitingContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+.waitingSpinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(124,58,237,0.2);
+    border-top-color: var(--vitaris-primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+#waitingMessage { color: var(--vitaris-text-muted); font-size: 14px; }
+
+/*******************************************************************************
+ *  LOGIN OPTIONS VIEW
+ *******************************************************************************/
+#loginOptionsContainer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+}
+#loginOptionsContent {
+    background: rgba(10,10,20,0.9);
+    border: 1px solid var(--vitaris-border);
+    border-radius: 8px;
+    padding: 30px;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    backdrop-filter: blur(10px);
+}
+#loginOptionsContent h2 {
+    font-family: 'Avenir Heavy', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+    margin: 0;
+    text-align: center;
+}
+#loginOptionsList { display: flex; flex-direction: column; gap: 8px; }
+#loginOptionsAddButton,
+#loginOptionsCancelButton {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Avenir Book', sans-serif;
+    font-size: 13px;
+    transition: opacity 0.2s;
+}
+#loginOptionsAddButton {
+    background: linear-gradient(135deg, var(--vitaris-primary), var(--vitaris-secondary));
+    color: white;
+}
+#loginOptionsCancelButton {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--vitaris-text-muted);
+}
+#loginOptionsAddButton:hover,
+#loginOptionsCancelButton:hover { opacity: 0.85; }
+
+/*******************************************************************************
+ *  LANDING VIEW
+ *******************************************************************************/
+#landingContainer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    z-index: 20;
+}
+
+/* Panel izquierdo */
+#landingLeft {
+    flex: 1;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+#serverInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+#serverStatusContainer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+#serverStatusIcon {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--vitaris-text-muted);
+    display: inline-block;
+}
+#serverStatusIcon.online { background: var(--vitaris-success); box-shadow: 0 0 6px var(--vitaris-success); }
+#serverStatusIcon.offline { background: var(--vitaris-error); }
+#serverStatusText { font-size: 12px; color: var(--vitaris-text-muted); }
+#serverName {
+    font-family: 'Avenir Heavy', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: #fff;
+    margin: 0;
+}
+#serverAddress { font-size: 12px; color: var(--vitaris-accent); margin: 0; }
+
+#newsContainer { flex: 1; overflow: hidden; }
+#newsTitle {
+    font-family: 'Avenir Heavy', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--vitaris-text-muted);
+    margin: 0 0 12px 0;
+}
+#newsContent { display: flex; flex-direction: column; gap: 12px; }
+.newsEntry {
+    background: var(--vitaris-surface);
+    border: 1px solid var(--vitaris-border);
+    border-radius: 6px;
+    padding: 12px 14px;
+}
+.newsEntryTitle {
+    font-family: 'Avenir Medium', sans-serif;
+    font-size: 13px;
+    color: #fff;
+    margin-bottom: 4px;
+}
+.newsEntryDesc { font-size: 12px; color: var(--vitaris-text-muted); line-height: 1.5; }
+
+/* Panel derecho */
+#landingRight {
+    width: 220px;
+    padding: 20px 20px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: rgba(6,6,14,0.6);
+    border-left: 1px solid var(--vitaris-border);
+    backdrop-filter: blur(8px);
+}
+#playerInfoContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: var(--vitaris-surface);
+    border: 1px solid var(--vitaris-border);
+    border-radius: 6px;
+}
+#playerAvatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+#playerDetails { flex: 1; }
+#playerName {
+    font-family: 'Avenir Medium', sans-serif;
+    font-size: 13px;
+    color: #fff;
+    margin: 0;
+}
+#playerType { font-size: 11px; color: var(--vitaris-text-muted); margin: 0; }
+#playerSwitchButton {
+    background: none;
+    border: none;
+    color: var(--vitaris-text-muted);
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.2s;
+}
+#playerSwitchButton:hover { color: var(--vitaris-accent); }
+
+#launchContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+#progressContainer { width: 100%; display: flex; flex-direction: column; gap: 6px; align-items: center; }
+#progressStatus { font-size: 11px; color: var(--vitaris-text-muted); }
+#progressBar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+#progressBarFill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--vitaris-primary), var(--vitaris-accent));
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+#progressValue { font-size: 11px; color: var(--vitaris-text-muted); }
+#launchButton {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--vitaris-primary), var(--vitaris-secondary));
+    border: none;
+    border-radius: 6px;
+    font-family: 'Avenir Heavy', sans-serif;
+    font-size: 16px;
+    letter-spacing: 3px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(124,58,237,0.5);
+}
+#launchButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(124,58,237,0.7);
+}
+#launchButton:active { transform: translateY(0); }
+#launchButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#settingsNavContainer { display: flex; justify-content: center; }
+#settingsNavButton {
+    background: none;
+    border: none;
+    color: var(--vitaris-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: color 0.2s, background 0.2s;
+}
+#settingsNavButton:hover {
+    color: var(--vitaris-text);
+    background: var(--vitaris-surface);
+}
+
+/*******************************************************************************
+ *  SETTINGS VIEW
+ *******************************************************************************/
+#settingsContainer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    z-index: 20;
+    overflow-y: auto;
+}
+#settingsHeader {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--vitaris-border);
+    background: rgba(6,6,14,0.6);
+    backdrop-filter: blur(8px);
+}
+#settingsBack {
+    background: none;
+    border: none;
+    color: var(--vitaris-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    transition: color 0.2s;
+}
+#settingsBack:hover { color: var(--vitaris-text); }
+#settingsHeader h2 {
+    font-family: 'Avenir Heavy', sans-serif;
+    font-size: 16px;
+    letter-spacing: 2px;
+    margin: 0;
+    color: #fff;
+}
+#settingsContent {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+.settingsSection {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.settingsSectionTitle {
+    font-family: 'Avenir Heavy', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--vitaris-accent);
+    margin: 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--vitaris-border);
+}
+.settingsField {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.settingsField label {
+    font-size: 12px;
+    color: var(--vitaris-text-muted);
+}
+.settingsField input[type="text"],
+.settingsField input[type="number"] {
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(124,58,237,0.2);
+    border-radius: 4px;
+    color: var(--vitaris-text);
+    font-family: 'Avenir Book', sans-serif;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+    max-width: 320px;
+}
+.settingsField input:focus { border-color: var(--vitaris-primary); }
+.settingsInputRow {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.settingsInputRow input { flex: 1; }
+.settingsInputRow button {
+    padding: 8px 14px;
+    background: var(--vitaris-surface);
+    border: 1px solid var(--vitaris-border);
+    border-radius: 4px;
+    color: var(--vitaris-text);
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+.settingsInputRow button:hover { background: rgba(255,255,255,0.1); }
+
+.settingsToggle {
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: space-between;
+}
+.toggleSwitch {
+    width: 40px;
+    height: 22px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 11px;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.3s;
+    flex-shrink: 0;
+}
+.toggleSwitch.active { background: var(--vitaris-primary); }
+.toggleKnob {
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 16px; height: 16px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+.toggleSwitch.active .toggleKnob { transform: translateX(18px); }
+
+.settingsAbout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+#settingsLogo { width: 48px; height: 48px; object-fit: contain; }
+#settingsVersion { font-size: 13px; color: var(--vitaris-text); margin: 0; }
+#settingsAuthor { font-size: 12px; color: var(--vitaris-text-muted); margin: 0; }
+
+/*******************************************************************************
+ *  OVERLAY
+ *******************************************************************************/
+#overlayContainer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9000;
+    backdrop-filter: blur(4px);
+}
+#overlayContent {
+    background: rgba(10,10,20,0.95);
+    border: 1px solid var(--vitaris-border);
+    border-radius: 8px;
+    padding: 30px;
+    max-width: 380px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+#overlayTitle {
+    font-family: 'Avenir Heavy', sans-serif;
+    font-size: 16px;
+    color: #fff;
+}
+#overlayDesc { font-size: 13px; color: var(--vitaris-text-muted); line-height: 1.6; }
+#overlayActionContainer { display: flex; gap: 10px; justify-content: flex-end; }
+#overlayActionConfirm {
+    padding: 9px 20px;
+    background: linear-gradient(135deg, var(--vitaris-primary), var(--vitaris-secondary));
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+#overlayActionConfirm:hover { opacity: 0.9; }
+#overlayActionCancel {
+    padding: 9px 20px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px;
+    color: var(--vitaris-text-muted);
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#overlayActionCancel:hover { background: rgba(255,255,255,0.1); }
+
+/*******************************************************************************
+ *  ANIMACIONES GLOBALES
+ *******************************************************************************/
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}

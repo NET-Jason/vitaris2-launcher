@@ -1,0 +1,12 @@
+{
+    "app.title": "Vitaris II Launcher",
+    "index.microsoftLoginTitle": "Iniciar sesión con Microsoft",
+    "index.microsoftLogoutTitle": "Cerrar sesión de Microsoft",
+    "welcome.greeting": "Bienvenido a Vitaris II",
+    "welcome.begin": "COMENZAR",
+    "login.title": "Iniciar Sesión",
+    "login.microsoft": "Iniciar sesión con Microsoft",
+    "landing.launch": "JUGAR",
+    "landing.server": "Vitaris II",
+    "settings.title": "Configuración"
+}

@@ -1,0 +1,66 @@
+ <div id="landingContainer" style="display: none;">
+
+    <!-- Panel izquierdo: info del servidor -->
+    <div id="landingLeft">
+        <div id="serverInfo">
+            <div id="serverStatusContainer">
+                <span id="serverStatusIcon"></span>
+                <span id="serverStatusText">Conectando...</span>
+            </div>
+            <div id="serverDetails">
+                <p id="serverName">Vitaris II</p>
+                <p id="serverAddress">play.vitaris.net</p>
+            </div>
+        </div>
+        <div id="newsContainer">
+            <h3 id="newsTitle">Noticias</h3>
+            <div id="newsContent">
+                <div class="newsEntry">
+                    <p class="newsEntryTitle">¡Bienvenido a Vitaris II!</p>
+                    <p class="newsEntryDesc">El servidor ha sido actualizado. Disfruta de las nuevas zonas y mecánicas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel derecho: controles de lanzamiento -->
+    <div id="landingRight">
+        <div id="playerInfoContainer">
+            <img id="playerAvatar" src="assets/images/default_avatar.png" alt="Avatar">
+            <div id="playerDetails">
+                <p id="playerName">Jugador</p>
+                <p id="playerType">Microsoft</p>
+            </div>
+            <button id="playerSwitchButton" tabindex="-1">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M1 7C1 3.686 3.686 1 7 1s6 2.686 6 6-2.686 6-6 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                    <path d="M4 10l-3 3M4 10H1M4 10v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+
+        <div id="launchContainer">
+            <div id="progressContainer" style="display: none;">
+                <p id="progressStatus">Descargando...</p>
+                <div id="progressBar">
+                    <div id="progressBarFill"></div>
+                </div>
+                <p id="progressValue">0%</p>
+            </div>
+            <button id="launchButton" tabindex="-1">
+                <span id="launchButtonText">JUGAR</span>
+            </button>
+        </div>
+
+        <div id="settingsNavContainer">
+            <button id="settingsNavButton" tabindex="-1">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <circle cx="9" cy="9" r="2.5" stroke="currentColor" stroke-width="1.3"/>
+                    <path d="M9 1v2M9 15v2M1 9h2M15 9h2M3.22 3.22l1.42 1.42M13.36 13.36l1.42 1.42M14.78 3.22l-1.42 1.42M4.64 13.36l-1.42 1.42" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+                <span>Configuración</span>
+            </button>
+        </div>
+    </div>
+
+</div>
