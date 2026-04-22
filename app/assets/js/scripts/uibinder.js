@@ -55,14 +55,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ── Login: botón Microsoft ──────────────────────────────────────────────
-    const msftBtn = document.getElementById('loginMicrosoftButton')
-    if (msftBtn) {
-        msftBtn.addEventListener('click', () => {
-            switchView(VIEWS.WAITING)
-            const { ipcRenderer } = require('electron')
-            ipcRenderer.send(MSFT_OPCODE.OPEN_LOGIN, VIEWS.LANDING, VIEWS.LOGIN)
+    document.getElementById('loginMicrosoftButton').addEventListener('click', () => {
+        switchView(VIEWS.WAITING)
+        const { ipcRenderer } = require('electron')
+        ipcRenderer.send('MSFTOpenLogin', VIEWS.LANDING, VIEWS.LOGIN)
+
+        ipcRenderer.once('MSFTReplyLogin', (event, type, data, view) => {
+            if(type === 'success') {
+                switchView(VIEWS.LANDING)
+            } else {
+                switchView(view || VIEWS.LOGIN)
+            }
         })
-    }
+    })
 
     // ── Settings: botón volver ──────────────────────────────────────────────
     const settingsBack = document.getElementById('settingsBack')
