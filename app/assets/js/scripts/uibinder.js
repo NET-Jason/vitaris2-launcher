@@ -1,140 +1,135 @@
- /**
+/**
  * VITARIS II LAUNCHER - UI Binder
- * Conecta los elementos de la UI con sus acciones
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+const remote = require('@electron/remote')
+const currentWindow = remote.getCurrentWindow()
 
-    // ── Frame: botones de ventana ───────────────────────────────────────────
-    const remote = require('@electron/remote')
-    const currentWindow = remote.getCurrentWindow()
-
-    const btnMinimize = document.getElementById('frameButton_minimize')
-    const btnMaximize = document.getElementById('frameButton_maximize')
-    const btnClose    = document.getElementById('frameButton_close')
-
-    if (btnMinimize) btnMinimize.addEventListener('click', () => currentWindow.minimize())
-    if (btnMaximize) btnMaximize.addEventListener('click', () => {
-        if (currentWindow.isMaximized()) {
-            currentWindow.unmaximize()
-        } else {
-            currentWindow.maximize()
-        }
-    })
-    if (btnClose) btnClose.addEventListener('click', () => currentWindow.close())
-
-    // Darwin buttons
-    const btnDarwinClose    = document.getElementById('frameButtonDarwin_close')
-    const btnDarwinMinimize = document.getElementById('frameButtonDarwin_minimize')
-    const btnDarwinMaximize = document.getElementById('frameButtonDarwin_maximize')
-
-    if (btnDarwinClose)    btnDarwinClose.addEventListener('click', () => currentWindow.close())
-    if (btnDarwinMinimize) btnDarwinMinimize.addEventListener('click', () => currentWindow.minimize())
-    if (btnDarwinMaximize) btnDarwinMaximize.addEventListener('click', () => {
-        if (currentWindow.isMaximized()) {
-            currentWindow.unmaximize()
-        } else {
-            currentWindow.maximize()
-        }
-    })
-
-    // Mostrar frame correcto según plataforma
-    const frameDarwin = document.getElementById('frameContentDarwin')
-    const frameWin    = document.getElementById('frameContentWin')
-    if (process.platform === 'darwin') {
-        if (frameDarwin) frameDarwin.style.display = 'flex'
-        if (frameWin)    frameWin.style.display    = 'none'
-    }
-
-    // ── Welcome: botón comenzar ─────────────────────────────────────────────
-    const welcomeBtn = document.getElementById('welcomeButton')
-    if (welcomeBtn) {
-        welcomeBtn.addEventListener('click', () => {
-            switchView(VIEWS.LOGIN)
-        })
-    }
-
-    // ── Login: botón Microsoft ──────────────────────────────────────────────
-    document.getElementById('loginMicrosoftButton').addEventListener('click', () => {
-        switchView(VIEWS.WAITING)
-        const { ipcRenderer } = require('electron')
-        ipcRenderer.send('MSFTOpenLogin', VIEWS.LANDING, VIEWS.LOGIN)
-
-        ipcRenderer.once('MSFTReplyLogin', (event, type, data, view) => {
-            if(type === 'success') {
-                switchView(VIEWS.LANDING)
-            } else {
-                switchView(view || VIEWS.LOGIN)
-            }
-        })
-    })
-
-    // ── Settings: botón volver ──────────────────────────────────────────────
-    const settingsBack = document.getElementById('settingsBack')
-    if (settingsBack) {
-        settingsBack.addEventListener('click', () => {
-            switchView(VIEWS.LANDING)
-        })
-    }
-
-    // ── Landing: botón settings ─────────────────────────────────────────────
-    const settingsNav = document.getElementById('settingsNavButton')
-    if (settingsNav) {
-        settingsNav.addEventListener('click', () => {
-            switchView(VIEWS.SETTINGS)
-        })
-    }
-
-    // ── Landing: botón cambiar cuenta ───────────────────────────────────────
-    const switchBtn = document.getElementById('playerSwitchButton')
-    if (switchBtn) {
-        switchBtn.addEventListener('click', () => {
-            showOverlay(
-                'Cambiar cuenta',
-                '¿Deseas cerrar sesión y cambiar de cuenta?',
-                () => switchView(VIEWS.LOGIN),
-                null
-            )
-        })
-    }
-
-    // ── Settings: botón browse Java ─────────────────────────────────────────
-    const javaPathBrowse = document.getElementById('javaPathBrowse')
-    if (javaPathBrowse) {
-        javaPathBrowse.addEventListener('click', async () => {
-            const { dialog } = remote
-            const result = await dialog.showOpenDialog(currentWindow, {
-                title: 'Seleccionar ejecutable de Java',
-                properties: ['openFile'],
-                filters: [{ name: 'Java', extensions: ['exe', ''] }]
-            })
-            if (!result.canceled && result.filePaths.length > 0) {
-                document.getElementById('javaPath').value = result.filePaths[0]
-            }
-        })
-    }
-
-    // ── Settings: toggles ───────────────────────────────────────────────────
-    initToggle('closeLauncherToggle', false, (val) => {
-        console.log('Cerrar launcher al jugar:', val)
-    })
-    initToggle('prereleaseToggle', false, (val) => {
-        console.log('Prereleases:', val)
-    })
-
-    // ── Settings: link autor ────────────────────────────────────────────────
-    const authorLink = document.getElementById('settingsAuthorLink')
-    if (authorLink) {
-        authorLink.addEventListener('click', () => {
-            const { shell } = require('electron')
-            shell.openExternal('https://github.com/NET-Jason')
-        })
-    }
-
-    // ── Inicializar: mostrar pantalla de bienvenida ─────────────────────────
-    setTimeout(() => {
-        hideLoadingScreen()
-        switchView(VIEWS.WELCOME)
-    }, 1500)
-
+// ── Frame buttons ───────────────────────────────────────────────────────────
+document.getElementById('frameButton_minimize').addEventListener('click', () => currentWindow.minimize())
+document.getElementById('frameButton_maximize').addEventListener('click', () => {
+    currentWindow.isMaximized() ? currentWindow.unmaximize() : currentWindow.maximize()
 })
+document.getElementById('frameButton_close').addEventListener('click', () => currentWindow.close())
+
+if (process.platform === 'darwin') {
+    document.getElementById('frameContentDarwin').style.display = 'flex'
+    document.getElementById('frameContentWin').style.display    = 'none'
+    document.getElementById('frameButtonDarwin_close').addEventListener('click', () => currentWindow.close())
+    document.getElementById('frameButtonDarwin_minimize').addEventListener('click', () => currentWindow.minimize())
+    document.getElementById('frameButtonDarwin_maximize').addEventListener('click', () => {
+        currentWindow.isMaximized() ? currentWindow.unmaximize() : currentWindow.maximize()
+    })
+}
+
+// ── Welcome ─────────────────────────────────────────────────────────────────
+document.getElementById('welcomeButton').addEventListener('click', () => switchView(VIEWS.LOGIN))
+
+// ── Login: Microsoft ────────────────────────────────────────────────────────
+document.getElementById('loginMicrosoftButton').addEventListener('click', () => {
+    switchView(VIEWS.WAITING)
+    const { ipcRenderer } = require('electron')
+    ipcRenderer.send('MSFTOpenLogin', VIEWS.LANDING, VIEWS.LOGIN)
+
+    ipcRenderer.once('MSFTReplyLogin', (event, type, data, view) => {
+        if (type === 'success') {
+            loadMicrosoftAccount(data)
+            switchView(VIEWS.LANDING)
+        } else {
+            switchView(view || VIEWS.LOGIN)
+        }
+    })
+})
+
+// ── Cargar cuenta Microsoft ─────────────────────────────────────────────────
+async function loadMicrosoftAccount(authData) {
+    try {
+        // Obtener access token de Xbox Live
+        const xblRes = await fetch('https://user.auth.xboxlive.com/user/authenticate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+                Properties: {
+                    AuthMethod: 'RPS',
+                    SiteName: 'user.auth.xboxlive.com',
+                    RpsTicket: `d=${authData.access_token}`
+                },
+                RelyingParty: 'http://auth.xboxlive.com',
+                TokenType: 'JWT'
+            })
+        })
+        const xblData = await xblRes.json()
+        const xblToken = xblData.Token
+        const userHash = xblData.DisplayClaims.xui[0].uhs
+
+        // Obtener token XSTS
+        const xstsRes = await fetch('https://xsts.auth.xboxlive.com/xsts/authorize', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+                Properties: { SandboxId: 'RETAIL', UserTokens: [xblToken] },
+                RelyingParty: 'rp://api.minecraftservices.com/',
+                TokenType: 'JWT'
+            })
+        })
+        const xstsData = await xstsRes.json()
+        const xstsToken = xstsData.Token
+
+        // Obtener token de Minecraft
+        const mcRes = await fetch('https://api.minecraftservices.com/authentication/login_with_xbox', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ identityToken: `XBL3.0 x=${userHash};${xstsToken}` })
+        })
+        const mcData = await mcRes.json()
+        const mcToken = mcData.access_token
+
+        // Obtener perfil de Minecraft
+        const profileRes = await fetch('https://api.minecraftservices.com/minecraft/profile', {
+            headers: { 'Authorization': `Bearer ${mcToken}` }
+        })
+        const profile = await profileRes.json()
+
+        // Actualizar UI con datos reales
+        if (profile.name) {
+            document.getElementById('playerName').textContent = profile.name
+            document.getElementById('playerType').textContent = 'Microsoft'
+            const avatarUrl = `https://crafatar.com/avatars/${profile.id}?size=36&overlay`
+            document.getElementById('playerAvatar').src = avatarUrl
+            document.getElementById('playerAvatar').onerror = () => {
+                document.getElementById('playerAvatar').src = `https://crafatar.com/avatars/steve?size=36`
+            }
+        }
+
+    } catch (err) {
+        console.error('Error cargando cuenta Microsoft:', err)
+        document.getElementById('playerName').textContent = 'Jugador'
+        document.getElementById('playerType').textContent = 'Microsoft'
+    }
+}
+
+// ── Settings ────────────────────────────────────────────────────────────────
+document.getElementById('settingsBack').addEventListener('click', () => switchView(VIEWS.LANDING))
+document.getElementById('settingsNavButton').addEventListener('click', () => switchView(VIEWS.SETTINGS))
+
+// ── Player switch ───────────────────────────────────────────────────────────
+document.getElementById('playerSwitchButton').addEventListener('click', () => {
+    showOverlay('Cambiar cuenta', '¿Deseas cerrar sesión y cambiar de cuenta?',
+        () => switchView(VIEWS.LOGIN), null)
+})
+
+// ── Settings autor link ─────────────────────────────────────────────────────
+document.getElementById('settingsAuthorLink').addEventListener('click', () => {
+    const { shell } = require('electron')
+    shell.openExternal('https://github.com/NET-Jason')
+})
+
+// ── Toggles ─────────────────────────────────────────────────────────────────
+initToggle('closeLauncherToggle', false, (val) => console.log('Cerrar launcher:', val))
+initToggle('prereleaseToggle', false, (val) => console.log('Prereleases:', val))
+
+// ── INIT ────────────────────────────────────────────────────────────────────
+setTimeout(() => {
+    hideLoadingScreen()
+    switchView(VIEWS.WELCOME)
+}, 1500)
