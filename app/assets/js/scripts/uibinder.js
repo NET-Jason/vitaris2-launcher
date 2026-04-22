@@ -33,13 +33,40 @@ document.getElementById('loginMicrosoftButton').addEventListener('click', () => 
 
     ipcRenderer.once('MSFTReplyLogin', (event, type, data, view) => {
         if (type === 'success') {
-            loadMicrosoftAccount(data)
+            // Mostrar landing primero
             switchView(VIEWS.LANDING)
+            // Intentar cargar avatar con el código de auth
+            if (data && data.code) {
+                fetchMinecraftProfile(data.code)
+            }
         } else {
             switchView(view || VIEWS.LOGIN)
         }
     })
 })
+
+async function fetchMinecraftProfile(authCode) {
+    try {
+        // Intercambiar código por token
+        const tokenRes = await fetch('https://login.microsoftonline.com/consumers/oauth2/v2.0/token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                client_id: '0b9981b0-be10-41f2-a994-a586a22486f6',
+                code: authCode,
+                grant_type: 'authorization_code',
+                redirect_uri: 'https://login.microsoftonline.com/common/oauth2/nativeclient',
+                scope: 'XboxLive.signin offline_access'
+            })
+        })
+        const tokenData = await tokenRes.json()
+        if (tokenData.access_token) {
+            await loadMicrosoftAccount(tokenData)
+        }
+    } catch(err) {
+        console.error('Error obteniendo token:', err)
+    }
+}
 
 // ── Cargar cuenta Microsoft ─────────────────────────────────────────────────
 async function loadMicrosoftAccount(authData) {

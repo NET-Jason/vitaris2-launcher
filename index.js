@@ -251,6 +251,7 @@ function createWindow() {
 
     win.loadURL(pathToFileURL(path.join(__dirname, 'app', 'app.ejs')).toString())
     win.removeMenu()
+    win.webContents.openDevTools()  // ← ELIMINA ESTA LÍNEA
     win.resizable = true
     win.on('closed', () => { win = null })
 }
