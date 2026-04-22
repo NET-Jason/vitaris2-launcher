@@ -80,6 +80,26 @@ npm run dist:linux
 ---
 
 ## 📁 Estructura del proyecto
+vitaris2-launcher/
+├── index.js                        # Proceso principal de Electron
+├── app/
+│   ├── app.ejs                     # Template HTML principal
+│   └── assets/
+│       ├── css/launcher.css        # Estilos del launcher
+│       ├── images/
+│       │   ├── backgrounds/        # Fondos del servidor (0-7.jpg)
+│       │   └── VitarisLogo.png     # Logo del servidor
+│       └── js/
+│           ├── scripts/
+│           │   ├── uicore.js       # Funciones base de la UI
+│           │   └── uibinder.js     # Eventos y navegación
+│           ├── lang/es_ES.json     # Traducciones
+│           ├── ipcconstants.js     # Constantes IPC
+│           ├── langloader.js       # Cargador de idiomas
+│           └── preloader.js        # Preload script
+├── .github/workflows/build.yml     # CI/CD con GitHub Actions
+├── electron-builder.yml            # Configuración de build
+└── package.json
 
 ---
 
