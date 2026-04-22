@@ -50,6 +50,16 @@
 - [Node.js 20.x](https://nodejs.org/)
 - npm
 
+## Requisitos del Sistema
+
+| Componente | Minimo | Recomendado |
+|------------|--------|-------------|
+| **Sistema Operativo** | Windows 10 / macOS 10.15 / Ubuntu 20.04 | Windows 11 / macOS 12+ / Ubuntu 22.04 |
+| **RAM** | 4 GB | 8 GB o mas |
+| **Almacenamiento** | 4 GB libres | 8 GB libres |
+| **Java** | Java 17 (instalado automaticamente) | Java 17+ |
+| **Conexion** | Conexion a internet estable | Banda ancha |
+
 ### Instalación
 
 ```bash
@@ -80,31 +90,26 @@ npm run dist:linux
 ---
 
 ## 📁 Estructura del proyecto
-vitaris2-launcher/
-├── index.js                        # Proceso principal de Electron
+
+```
+EVIMERIA-LAUNCHER/
 ├── app/
-│   ├── app.ejs                     # Template HTML principal
-│   └── assets/
-│       ├── css/
-│       │   └── launcher.css        # Estilos del launcher
-│       ├── images/
-│       │   ├── backgrounds/        # Fondos del servidor (0-7.jpg)
-│       │   └── VitarisLogo.png     # Logo del servidor
-│       └── js/
-│           ├── scripts/
-│           │   ├── uicore.js       # Funciones base de la UI
-│           │   └── uibinder.js     # Eventos y navegación
-│           ├── lang/
-│           │   └── es_ES.json      # Traducciones
-│           ├── ipcconstants.js     # Constantes IPC
-│           ├── langloader.js       # Cargador de idiomas
-│           └── preloader.js        # Preload script
-├── .github/
-│   └── workflows/
-│       └── build.yml               # CI/CD con GitHub Actions
-├── electron-builder.yml            # Configuración de build
-└── package.json
----
+│   ├── assets/
+│   │   ├── css/          # Estilos
+│   │   ├── fonts/        # Fuentes
+│   │   ├── images/       # Imagenes y fondos
+│   │   ├── js/           # Scripts principales
+│   │   │   └── scripts/  # Scripts de UI
+│   │   └── lang/         # Archivos de idioma
+│   ├── app.ejs           # Plantilla principal
+│   ├── frame.ejs         # Marco de ventana
+│   ├── landing.ejs       # Pantalla principal
+│   ├── login.ejs         # Pantalla de login
+│   └── settings.ejs      # Pantalla de configuracion
+├── index.js              # Punto de entrada de Electron
+├── package.json          # Configuracion del proyecto
+└── electron-builder.yml  # Configuracion de compilacion
+```
 
 ## 🔧 Configuración
 
