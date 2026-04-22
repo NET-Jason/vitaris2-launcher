@@ -92,23 +92,31 @@ npm run dist:linux
 ## 📁 Estructura del proyecto
 
 ```
-EVIMERIA-LAUNCHER/
+vitaris2-launcher/
+├── index.js                        # Proceso principal de Electron
 ├── app/
-│   ├── assets/
-│   │   ├── css/          # Estilos
-│   │   ├── fonts/        # Fuentes
-│   │   ├── images/       # Imagenes y fondos
-│   │   ├── js/           # Scripts principales
-│   │   │   └── scripts/  # Scripts de UI
-│   │   └── lang/         # Archivos de idioma
-│   ├── app.ejs           # Plantilla principal
-│   ├── frame.ejs         # Marco de ventana
-│   ├── landing.ejs       # Pantalla principal
-│   ├── login.ejs         # Pantalla de login
-│   └── settings.ejs      # Pantalla de configuracion
-├── index.js              # Punto de entrada de Electron
-├── package.json          # Configuracion del proyecto
-└── electron-builder.yml  # Configuracion de compilacion
+│   ├── app.ejs                     # Template HTML principal
+│   └── assets/
+│       ├── css/
+│       │   └── launcher.css        # Estilos del launcher
+│       ├── images/
+│       │   ├── backgrounds/        # Fondos del servidor (0-7.jpg)
+│       │   └── VitarisLogo.png     # Logo del servidor
+│       └── js/
+│           ├── scripts/
+│           │   ├── uicore.js       # Funciones base de la UI
+│           │   └── uibinder.js     # Eventos y navegación
+│           ├── lang/
+│           │   └── es_ES.json      # Traducciones
+│           ├── ipcconstants.js     # Constantes IPC
+│           ├── langloader.js       # Cargador de idiomas
+│           └── preloader.js        # Preload script
+├── .github/
+│   └── workflows/
+│       └── build.yml               # CI/CD con GitHub Actions
+├── electron-builder.yml            # Configuración de build
+└── package.json
+
 ```
 
 ## 🔧 Configuración
