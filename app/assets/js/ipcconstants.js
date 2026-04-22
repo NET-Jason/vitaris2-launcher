@@ -1,4 +1,4 @@
- exports.AZURE_CLIENT_ID = 'TU_AZURE_CLIENT_ID_AQUI'
+exports.AZURE_CLIENT_ID = '0b9981b0-be10-41f2-a994-a586a22486f6'
 
 exports.MSFT_OPCODE = {
     OPEN_LOGIN   : 'MSFTOpenLogin',
