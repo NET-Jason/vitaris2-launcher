@@ -85,7 +85,8 @@ vitaris2-launcher/
 ├── app/
 │   ├── app.ejs                     # Template HTML principal
 │   └── assets/
-│       ├── css/launcher.css        # Estilos del launcher
+│       ├── css/
+│       │   └── launcher.css        # Estilos del launcher
 │       ├── images/
 │       │   ├── backgrounds/        # Fondos del servidor (0-7.jpg)
 │       │   └── VitarisLogo.png     # Logo del servidor
@@ -93,14 +94,16 @@ vitaris2-launcher/
 │           ├── scripts/
 │           │   ├── uicore.js       # Funciones base de la UI
 │           │   └── uibinder.js     # Eventos y navegación
-│           ├── lang/es_ES.json     # Traducciones
+│           ├── lang/
+│           │   └── es_ES.json      # Traducciones
 │           ├── ipcconstants.js     # Constantes IPC
 │           ├── langloader.js       # Cargador de idiomas
 │           └── preloader.js        # Preload script
-├── .github/workflows/build.yml     # CI/CD con GitHub Actions
+├── .github/
+│   └── workflows/
+│       └── build.yml               # CI/CD con GitHub Actions
 ├── electron-builder.yml            # Configuración de build
 └── package.json
-
 ---
 
 ## 🔧 Configuración
