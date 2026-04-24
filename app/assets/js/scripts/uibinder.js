@@ -14,7 +14,7 @@ document.getElementById('frameButton_close').addEventListener('click', () => cur
 
 if (process.platform === 'darwin') {
     document.getElementById('frameContentDarwin').style.display = 'flex'
-    document.getElementById('frameContentWin').style.display    = 'none'
+    document.getElementById('frameContentWin').style.display = 'none'
     document.getElementById('frameButtonDarwin_close').addEventListener('click', () => currentWindow.close())
     document.getElementById('frameButtonDarwin_minimize').addEventListener('click', () => currentWindow.minimize())
     document.getElementById('frameButtonDarwin_maximize').addEventListener('click', () => {
@@ -32,22 +32,23 @@ document.getElementById('loginMicrosoftButton').addEventListener('click', () => 
     ipcRenderer.send('MSFTOpenLogin', VIEWS.LANDING, VIEWS.LOGIN)
 
     ipcRenderer.once('MSFTReplyLogin', (event, type, data, view) => {
-        if (type === 'success') {
-            // Mostrar landing primero
+        console.log('📱 Respuesta login:', type, data ? 'con code' : 'sin datos')
+        
+        if (type === 'success' && data && data.code) {
+            console.log('🎮 Code recibido, intercambiando por token...')
             switchView(VIEWS.LANDING)
-            // Intentar cargar avatar con el código de auth
-            if (data && data.code) {
-                fetchMinecraftProfile(data.code)
-            }
+            fetchMinecraftProfile(data.code)
         } else {
+            console.error('❌ Login fallido')
             switchView(view || VIEWS.LOGIN)
         }
     })
 })
 
+// ── Intercambiar código por token y obtener perfil ──────────────────────────
 async function fetchMinecraftProfile(authCode) {
     try {
-        // Intercambiar código por token
+        // Obtener token de Microsoft
         const tokenRes = await fetch('https://login.microsoftonline.com/consumers/oauth2/v2.0/token', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -57,21 +58,31 @@ async function fetchMinecraftProfile(authCode) {
                 grant_type: 'authorization_code',
                 redirect_uri: 'https://login.microsoftonline.com/common/oauth2/nativeclient',
                 scope: 'XboxLive.signin offline_access'
-            })
+            }).toString()
         })
         const tokenData = await tokenRes.json()
+        
+        if (tokenData.error) {
+            console.error('❌ Error obteniendo token:', tokenData.error)
+            return
+        }
+
         if (tokenData.access_token) {
+            console.log('✅ Token obtenido, cargando perfil...')
             await loadMicrosoftAccount(tokenData)
+
         }
     } catch(err) {
-        console.error('Error obteniendo token:', err)
+        console.error('❌ Error en fetchMinecraftProfile:', err)
     }
 }
 
 // ── Cargar cuenta Microsoft ─────────────────────────────────────────────────
-async function loadMicrosoftAccount(authData) {
+async function loadMicrosoftAccount(tokenData) {
     try {
-        // Obtener access token de Xbox Live
+        const accessToken = tokenData.access_token
+
+        // Xbox Live
         const xblRes = await fetch('https://user.auth.xboxlive.com/user/authenticate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -79,7 +90,7 @@ async function loadMicrosoftAccount(authData) {
                 Properties: {
                     AuthMethod: 'RPS',
                     SiteName: 'user.auth.xboxlive.com',
-                    RpsTicket: `d=${authData.access_token}`
+                    RpsTicket: `d=${accessToken}`
                 },
                 RelyingParty: 'http://auth.xboxlive.com',
                 TokenType: 'JWT'
@@ -89,7 +100,9 @@ async function loadMicrosoftAccount(authData) {
         const xblToken = xblData.Token
         const userHash = xblData.DisplayClaims.xui[0].uhs
 
-        // Obtener token XSTS
+        console.log('✅ Xbox Live OK')
+
+        // XSTS
         const xstsRes = await fetch('https://xsts.auth.xboxlive.com/xsts/authorize', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -102,7 +115,9 @@ async function loadMicrosoftAccount(authData) {
         const xstsData = await xstsRes.json()
         const xstsToken = xstsData.Token
 
-        // Obtener token de Minecraft
+        console.log('✅ XSTS OK')
+
+        // Minecraft token
         const mcRes = await fetch('https://api.minecraftservices.com/authentication/login_with_xbox', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -111,25 +126,27 @@ async function loadMicrosoftAccount(authData) {
         const mcData = await mcRes.json()
         const mcToken = mcData.access_token
 
-        // Obtener perfil de Minecraft
+        console.log('✅ Minecraft token OK')
+
+        // Perfil de Minecraft
         const profileRes = await fetch('https://api.minecraftservices.com/minecraft/profile', {
             headers: { 'Authorization': `Bearer ${mcToken}` }
         })
         const profile = await profileRes.json()
 
-        // Actualizar UI con datos reales
+        console.log('✅ Perfil obtenido:', profile.name)
+
+        // Actualizar UI
         if (profile.name) {
             document.getElementById('playerName').textContent = profile.name
             document.getElementById('playerType').textContent = 'Microsoft'
-            const avatarUrl = `https://crafatar.com/avatars/${profile.id}?size=36&overlay`
-            document.getElementById('playerAvatar').src = avatarUrl
-            document.getElementById('playerAvatar').onerror = () => {
-                document.getElementById('playerAvatar').src = `https://crafatar.com/avatars/steve?size=36`
-            }
+            const avatar = document.getElementById('playerAvatar')
+            avatar.src = `https://crafatar.com/avatars/${profile.id}?size=38&overlay`
+            avatar.onerror = () => { avatar.src = 'https://crafatar.com/avatars/steve?size=38' }
         }
 
     } catch (err) {
-        console.error('Error cargando cuenta Microsoft:', err)
+        console.error('❌ Error cargando perfil:', err)
         document.getElementById('playerName').textContent = 'Jugador'
         document.getElementById('playerType').textContent = 'Microsoft'
     }
